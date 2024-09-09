@@ -1,47 +1,57 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref, onMounted } from 'vue'
+import Person from './components/Person.vue'
+import Message from './components/Message.vue'
+
+const mensajes = ref([])
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <Person @saveMessage="(msg) => mensajes.push(msg)" alineacion="izquierda" />
+  <div 
+  class="chat">
+    <Message v-for="(mensaje, i) in mensajes" :key="i" :mensaje="mensaje">
+      {{ mensaje.texto }}
+    </Message>
+  </div>
+  <Person @saveMessage="(msg) => mensajes.push(msg)" alineacion="derecha" />
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+.chat {
+  background-color: gainsboro;
+  box-shadow: 0 0 2px 2px gray;
+  padding: 1rem;
+  overflow-y: scroll;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.message__author {
+  color: gray;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.message__text {
+  padding: .3rem;
+  border-radius: 5px;
+  display: inline-block;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+@media (min-width: 768px) { 
+  .chat {
+    height: 370px;
   }
 }
+
+@media (min-width: 1280px) { 
+  .chat {
+    height: 450px;
+  }
+}
+
+
 </style>
